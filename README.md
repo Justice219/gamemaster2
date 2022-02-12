@@ -23,4 +23,4 @@ Example of the menu
 ![Menu](https://cdn.upload.systems/uploads/5yvSv6h6.png)
 
 Showcase of the Lives System
-[![Watch the video](https://img.youtube.com/vi/vz02coQJP5Q/maxresdefault.jpg)](https://www.youtube.com/watch?v=vz02coQJP5Q)
+[![Watch the video](https://www.youtube.com/watch?v=vz02coQJP5Q)
