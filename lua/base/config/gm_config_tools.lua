@@ -353,8 +353,7 @@ gm.server.tools.add("Disable Lights", {
     desc = "Disbable all lights in the map!",
     author = "Justice",
     category = "World",
-    args = {
-    },
+    args = {},
     func = function(caller, args)
         if gm.server.data.temp.lights then
             gm.server.data.temp.lights = false
@@ -372,6 +371,91 @@ gm.server.tools.add("Disable Lights", {
             net.Broadcast()
             
             caller:JLIBSendNotification("Disable Lights", "Lights are now disabled!")
+        end
+    end
+})
+gm.server.tools.add("Disable OOC", {
+    desc = "Disables OOC for all players!",
+    author = "Justice",
+    category = "Server",
+    args = {},
+    func = function(caller, args)
+        if gm.server.data.temp.oocDisable then
+            gm.server.data.temp.oocDisable = false
+            hook.Remove("PlayerSay", "gm_ooc")
+            caller:JLIBSendNotification("Disable OOC", "OOC is now enabled!")
+        else
+            gm.server.data.temp.oocDisable = true
+            hook.Add("PlayerSay", "gm_ooc", function(ply, text)
+                local txt = string.explode(" ", text)
+                if txt[1] == "/ooc" then
+                    return ""
+                else
+                    return text
+                end
+            end)
+            caller:JLIBSendNotification("Disable OOC", "OOC is now disabled!")
+        end
+    end
+})
+gm.server.tools.add("Server Lives", {
+    desc = "Creates a lives system for the server!",
+    author = "Justice",
+    category = "Server",
+    args = {
+        ["Lives"] = {
+            name = "Lives",
+            desc = "The amount of lives you want the server to have",
+            type = "number",
+            def = 3
+        },
+    },
+    func = function(caller, args)
+        local function findAlivePlayer()
+            local targ
+            for k,v in pairs(player.GetAll()) do -- micro optimisations 
+                if v && v:IsValid() && v:Alive() then
+                    targ = v
+                    break -- found someone kill loop fast.
+                end
+            end
+            return targ
+        end
+
+        if gm.server.data.temp.lives then
+            hook.Remove("PlayerDeath", "gm_lives")
+            hook.Remove("PlayerDeathThink", "gm_lives2")
+            gm.server.data.temp.lives = false
+            caller:JLIBSendNotification("Server Lives", "Lives are now disabled!")
+            for k,v in pairs(player.GetAll()) do
+                v:UnSpectate()
+                v:Respawn()
+                v:JLIBChatNotify("Lives", "Lives have been disabled! You can now respawn!")
+            end
+        else
+            for k,v in pairs(player.GetAll()) do
+                v:SetNWInt("gm2_lives", args["Lives"].def)
+                v:JLIBChatNotify("Lives", "Lives have been enabled! You have " .. args["Lives"].def .. " lives!")
+            end
+            hook.Add("PlayerDeath", "gm_lives", function(ply, killer, attacker)
+                ply:SetNWInt("gm2_lives", ply:GetNWInt("gm2_lives") - 1)
+                if ply:GetNWInt("gm2_lives") <= 0 then
+                    ply:JLIBChatNotify("Lives", "You have died and are spectating!")
+
+                    ply:Spectate(OBS_MODE_CHASE)
+                    ply:SpectateEntity(findAlivePlayer())
+                else
+                    ply:JLIBChatNotify("Lives", "You have died and have " .. ply:GetNWInt("gm2_lives") .. " lives left!")
+                end
+                
+            end)
+            hook.Add("PlayerDeathThink", "gm_lives2", function(ply)
+                if ply:GetNWInt("gm2_lives") == 0 then
+                    return false
+                end     
+            end)
+            gm.server.data.temp.lives = true
+            caller:JLIBSendNotification("Lives", "Lives are now enabled!")
         end
     end
 })
