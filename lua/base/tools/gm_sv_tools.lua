@@ -19,6 +19,7 @@ function gm.server.tools.add(name, tbl)
         category = tbl.category,
         args = tbl.args,
     }
+    gm.server.errors.change("Tool registered: " .. name)
 end
 function gm.server.tools.remove(name)
     if not gm.server.data.tools[name] then

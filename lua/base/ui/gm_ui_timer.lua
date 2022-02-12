@@ -28,7 +28,7 @@ function gm.client.menus.timer(time, method)
             k = nil
             v:Remove()
         end
-        
+
         if timer.Exists("gm_timer") then
             timer.Remove("gm_timer")
         end
@@ -44,7 +44,7 @@ function gm.client.menus.timer(time, method)
         back:SetSize(ScrW(), ScrH())
         back:SetPos(0, 0)
         back.Paint = function(self, w, h)
-            draw.RoundedBox( 6, 0, ScaleH(40), ScrW(), ScaleH(50), Color(41,41,41))
+            draw.RoundedBox( 6, 0, ScaleH(40), ScrW(), ScaleH(50), Color(41,41,41, 150))
         end
         table.insert(gm.client.data.timer, #gm.client.data.timer, back)
 

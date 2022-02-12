@@ -35,6 +35,9 @@ if SERVER then
     util.AddNetworkString("GM2:Tools:OpsatSet")
     util.AddNetworkString("GM2:Tools:OpsatRemove")
     util.AddNetworkString("GM2:Net:PanelAccess")
+    util.AddNetworkString("GM2:Net:ClientConvar")
+    util.AddNetworkString("GM2:Net:StringConCommand")
+    util.AddNetworkString("GM2:Tools:EnableLights")
 
     -- Lets AddCSLuaFile all the client files
     AddCSLuaFile("base/ui/gm_ui_main.lua")

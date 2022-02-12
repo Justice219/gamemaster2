@@ -138,14 +138,14 @@ function gm.client.menus.main()
             local sel = nil
             local a = {}
 
-            pl = panel:Add("DPanel")
-            pl:SetPos(ScaleW(290), ScaleH(75))
-            pl:SetSize(ScaleW(660), ScaleH(455))
-            pl:TDLib()
-            pl:ClearPaint()
-                :Background(Color(59, 59, 59), 6)
-                :Text("Player Tools", "DermaLarge", Color(255, 255, 255), TEXT_ALIGN_LEFT, ScaleW(210),ScaleH(-202.5))
-            table.insert(d, #d, pl)
+            server = panel:Add("DPanel")
+            server:SetPos(ScaleW(290), ScaleH(75))
+            server:SetSize(ScaleW(660), ScaleH(455))
+            server:TDLib()
+            server:ClearPaint()
+                :Background(Color(59,59,59), 6)
+                :Text("Server Tools", "DermaLarge", Color(255, 255, 255), TEXT_ALIGN_LEFT, ScaleW(250),ScaleH(-202.5))
+            table.insert(d, #d, server)
 
             scroll = panel:Add("DScrollPanel")
             scroll:SetPos(ScaleW(300), ScaleH(125))
@@ -273,13 +273,14 @@ function gm.client.menus.main()
                             end
                             str.OnValueChange = function(self)
                                 if !sel then return end
+                                PrintTable(sel.args)
+                                print(v.name)
                                 sel.args[v.name].def = str:GetValue()
                             end
                         end
                     end
                 end
             end
-
 
             for k,v in pairs(d) do
                 table.insert(data, #data, v)
@@ -294,14 +295,14 @@ function gm.client.menus.main()
             local sel = nil
             local a = {}
 
-            world = panel:Add("DPanel")
-            world:SetPos(ScaleW(290), ScaleH(75))
-            world:SetSize(ScaleW(660), ScaleH(455))
-            world:TDLib()
-            world:ClearPaint()
-                :Background(Color(59, 59, 59), 6)
+            server = panel:Add("DPanel")
+            server:SetPos(ScaleW(290), ScaleH(75))
+            server:SetSize(ScaleW(660), ScaleH(455))
+            server:TDLib()
+            server:ClearPaint()
+                :Background(Color(59,59,59), 6)
                 :Text("World Tools", "DermaLarge", Color(255, 255, 255), TEXT_ALIGN_LEFT, ScaleW(250),ScaleH(-202.5))
-            table.insert(d, #d, world)
+            table.insert(d, #d, server)
 
             scroll = panel:Add("DScrollPanel")
             scroll:SetPos(ScaleW(300), ScaleH(125))
@@ -434,6 +435,10 @@ function gm.client.menus.main()
                         end
                     end
                 end
+            end
+
+            for k,v in pairs(d) do
+                table.insert(data, #data, v)
             end
         end
     })

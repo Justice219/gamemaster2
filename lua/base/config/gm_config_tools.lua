@@ -5,6 +5,7 @@ gm.server.errors = gm.server.errors or {}
 
 gm.server.data = gm.server.data or {}
 gm.server.data.tools = gm.server.data.tools or {}
+gm.server.data.temp = gm.server.data.temp or {}
 
 gm.server.tools.add("Screen Shake", {
     desc = "Shakes the entire servers screen",
@@ -55,10 +56,15 @@ gm.server.tools.add("Black Screen", {
         net.WriteTable({            -- SINCE WE DONT WANT THE GAMEMASTER TO SEE THE BLACK SCREEN
             ["Founder"] = true,     -- LETS RESTRICT WHO CANT SEE IT!!!
             ["Gamemaster"] = true,
+            ["superadmin"] = true,
+            ["Admin"] = true,
+            ["Builder"] = true,
+            ["builder"] = true,
         })
         net.WriteInt(args["Duration"].def, 32)
         net.WriteInt(args["Fade Time"].def, 32)
         net.Broadcast()
+        caller:JLIBSendNotification("Black Screen", "Black Screen has been toggled")
     end
 })
 gm.server.tools.add("Screen Message", {
@@ -200,6 +206,7 @@ gm.server.tools.add("Set Opsat", {
             net.Broadcast()
 
             hook.Remove("PlayerInitialSpawn", "gm_opsatSync")
+            caller:JLIBSendNotification("Opsat", "Opsat has been removed")
         else            
             net.Start("GM2:Tools:OpsatSet")
             net.WriteTable(args)
@@ -210,6 +217,7 @@ gm.server.tools.add("Set Opsat", {
                 net.WriteTable(args)
                 net.Broadcast()
             end)
+            caller:JLIBSendNotification("Opsat", "Opsat has been set")
         end
     end
 })
@@ -218,18 +226,152 @@ gm.server.tools.add("Kill Player", {
     author = "Justice",
     category = "Player",
     args = {
-        ["Name"] = {
+        ["Player Name"] = {
             name = "Player Name",
             desc = "The name of the player",
             type = "string",
-            def = "Justice"
+            def = "Garry"
         },
     },
     func = function(caller, args)
         for k,v in pairs(player.GetAll()) do
             if v:Nick() == args["Name"].def then
                 v:Kill()
+                caller:JLIBSendNotification("Kill PLayer", "You have killed " .. v:Nick())
+            else
+                caller:JLIBSendNotification("Kill PLayer", "Player not found")
             end
+        end
+    end
+})
+gm.server.tools.add("Kill Entities", {
+    desc = "Kills all of a specific entity, make sure the entity name is correct!",
+    author = "Justice",
+    category = "World",
+    args = {
+        ["Entity Path"] = {
+            name = "Entity Path",
+            desc = "The path of the entity (Ex.) npc_monk)",
+            type = "string",
+            def = "npc_monk"
+        },
+    },
+    func = function(caller, args)
+        for k,v in pairs(ents.GetAll()) do
+            if v:GetClass() == args["Path"].def then
+                v:Remove()
+            end
+            caller:JLIBSendNotification("Kill Entities", "You have removed all of the " .. args["Path"].def .. " entities!")
+        end
+    end
+})
+gm.server.tools.add("Player ESP", {
+    desc = "Gives you esp of the entire server. Run again to remove!",
+    author = "Justice",
+    category = "World",
+    args = {},
+    func = function(caller, args)
+        net.Start("GM2:Net:ClientConvar")
+        if caller.jesp then 
+            caller.jesp = false
+            net.WriteBool(false)
+        else
+            caller.jesp = true
+            net.WriteBool(true)
+        end
+        net.WriteString("gm2_esp")
+        net.Send(caller)
+
+        caller:JLIBSendNotification("World ESP", "You have toggled esp!")
+    end
+})
+gm.server.tools.add("Levitate", {
+    desc = "Levitates a player, make sure their name is correct! THIS is dangerous and will send them high in the air!",
+    author = "Justice",
+    category = "Player",
+    args = {
+        ["Player Name"] = {
+            name = "Player Name",
+            desc = "The name of the player",
+            type = "string",
+            def = "Garry"
+        },
+        ["Duration"] = {
+            name = "Duration",
+            desc = "The duration of the levitation",
+            type = "number",
+            def = 5
+        },
+    },
+    func = function(caller, args)
+        for k,v in pairs(player.GetAll()) do
+            if v:Nick() == args["Player Name"].def then
+                v:SetGravity(-1)
+                net.Start("GM2:Net:StringConCommand")
+                net.WriteString("+jump")
+                net.Send(v)
+                timer.Simple(args["Duration"].def, function()
+                    if IsValid(v) then
+                        v:SetGravity(1)
+                        net.Start("GM2:Net:StringConCommand")
+                        net.WriteString("-jump")
+                        net.Send(v)
+                    end
+                end)
+                caller:JLIBSendNotification("Levitate", "You have sent " .. v:Nick().. " In the air!")
+            end
+        end
+    end
+})
+gm.server.tools.add("Toggle Flashlights", {
+    desc = "Disable or enable flashlights for all players! Run to enable and again to disable!",
+    author = "Justice",
+    category = "Server",
+    args = {
+    },
+    func = function(caller, args)
+        if gm.server.data.temp.flashlights then
+            gm.server.data.temp.flashlights = false
+            for k,v in pairs(player.GetAll()) do
+                v:AllowFlashlight(true)
+            end
+            hook.Remove("PlayerInitialSpawn", "gm_flashlights")
+            caller:JLIBSendNotification("Toggle Flashlights", "Flashlights are now enabled!")
+        else
+            gm.server.data.temp.flashlights = true
+            for k,v in pairs(player.GetAll()) do
+                v:AllowFlashlight(false)
+            end
+            hook.Add("PlayerInitialSpawn", "gm_flashlights", function(ply)
+                ply:AllowFlashlight(false)
+            end)
+            caller:JLIBSendNotification("Toggle Flashlights", "Flashlights are now disabled!")
+        end
+    end
+})
+gm.server.tools.add("Disable Lights", {
+    desc = "Disbable all lights in the map!",
+    author = "Justice",
+    category = "World",
+    args = {
+    },
+    func = function(caller, args)
+        if gm.server.data.temp.lights then
+            gm.server.data.temp.lights = false
+            
+            engine.LightStyle(0, "m")
+            net.Start("GM2:Tools:EnableLights")
+            net.Broadcast()
+
+            caller:JLIBSendNotification("Disable Lights", "Lights are now enabled!")
+        else    
+            gm.server.data.temp.lights = true
+
+            engine.LightStyle(0, "a")
+            net.Start("GM2:Tools:EnableLights")
+            net.Broadcast()
+            
+            caller:JLIBSendNotification("Disable Lights", "Lights are now disabled!")
         end
     end
 })
