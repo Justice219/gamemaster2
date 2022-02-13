@@ -375,7 +375,7 @@ gm.server.tools.add("Disable Lights", {
     end
 })
 gm.server.tools.add("Disable OOC", {
-    desc = "Disables OOC for all players!",
+    desc = "Disables OOC for all players! THIS IS BROKEN RIGHT NOW! DO NOT USE IT!",
     author = "Justice",
     category = "Server",
     args = {},
@@ -387,11 +387,9 @@ gm.server.tools.add("Disable OOC", {
         else
             gm.server.data.temp.oocDisable = true
             hook.Add("PlayerSay", "gm_ooc", function(ply, text)
-                local txt = string.explode(" ", text)
+                local txt = string.Explode(" ", text)
                 if txt[1] == "/ooc" then
                     return ""
-                else
-                    return text
                 end
             end)
             caller:JLIBSendNotification("Disable OOC", "OOC is now disabled!")
