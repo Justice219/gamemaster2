@@ -59,6 +59,10 @@ if SERVER then
     include("base/main/gm_sv_main.lua")
     include("base/chat/gm_sv_chat.lua")
     include("base/net/gm_sv_net.lua")
+
+    -- COOL STOOLS
+    include("base/stools/gm2_stools_permamodel.lua")
+    include("base/stools/gm2_stools_tempweapon.lua")
 end
 if CLIENT then
     -- Lets include the base files

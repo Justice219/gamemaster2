@@ -31,9 +31,44 @@ function gm.client.menus.opsat(args, method)
         back:SetPos(ScaleW(1550), ScaleH(0))
         back:SetBackgroundColor(color_black)
         back.Paint = function(self, w, h)
-            draw.RoundedBox( 6, 0, ScaleH(115), ScaleW(325), ScaleH(400), Color(41,41,41, 200) )
+            draw.RoundedBox( 0, 0, ScaleH(115), ScaleW(325), ScaleH(400), Color(41,41,41, 200) )
         end
         table.insert(gm.client.data.opsat, #gm.client.data.opsat, back)
+
+        side1 = back:Add("DPanel")
+        side1:SetPos(ScaleW(0), ScaleH(115))
+        side1:SetSize(ScaleW(325), ScaleH(5))
+        side1.Paint = function(self, w, h)
+            draw.RoundedBox( 0, 0, 0, ScaleW(325), ScaleH(5), Color(255,255,255, 200) )
+        end
+
+        side2 = back:Add("DPanel")
+        side2:SetPos(ScaleW(0), ScaleH(115))
+        side2:SetSize(ScaleW(325), ScaleH(5))
+        side2.Paint = function(self, w, h)
+            draw.RoundedBox( 0, 0, 0, ScaleW(325), ScaleH(5), Color(255,255,255, 200) )
+        end
+
+        side3 = back:Add("DPanel")
+        side3:SetPos(ScaleW(0), ScaleH(515))
+        side3:SetSize(ScaleW(325), ScaleH(5))
+        side3.Paint = function(self, w, h)
+            draw.RoundedBox( 0, 0, 0, ScaleW(325), ScaleH(5), Color(255,255,255, 200) )
+        end
+
+        side4 = back:Add("DPanel")
+        side4:SetPos(ScaleW(0), ScaleH(120))
+        side4:SetSize(ScaleW(5), ScaleH(400))
+        side4.Paint = function(self, w, h)
+            draw.RoundedBox( 0, 0, 0, ScaleW(325), ScaleH(515), Color(255,255,255, 200) )
+        end
+
+        side5 = back:Add("DPanel")
+        side5:SetPos(ScaleW(320), ScaleH(120))
+        side5:SetSize(ScaleW(5), ScaleH(400))
+        side5.Paint = function(self, w, h)
+            draw.RoundedBox( 0, 0, 0, ScaleW(325), ScaleH(515), Color(255,255,255, 200) )
+        end
 
         label = back:Add("DLabel")
         label:SetParent(back)
@@ -41,6 +76,13 @@ function gm.client.menus.opsat(args, method)
         label:SetSize(ScaleW(300), ScaleH(50))
         label:SetText(args["Title 1"].def)
         label:SetFont("gm_opsat_font")
+
+        label = back:Add("DPanel")
+        label:SetPos(ScaleW(10), ScaleH(170))
+        label:SetSize(ScaleW(300), ScaleH(5))
+        label.Paint = function(self, w, h)
+            draw.RoundedBox( 0, 0, 0, ScaleW(300), ScaleH(5), Color(255,255,255, 200) )
+        end
 
         text1 = back:Add("DLabel")
         text1:SetParent(back)
@@ -61,15 +103,22 @@ function gm.client.menus.opsat(args, method)
         title2:SetText(args["Title 2"].def)
         title2:SetFont("gm_opsat_font")
 
+        label = back:Add("DPanel")
+        label:SetPos(ScaleW(10), ScaleH(270))
+        label:SetSize(ScaleW(300), ScaleH(5))
+        label.Paint = function(self, w, h)
+            draw.RoundedBox( 0, 0, 0, ScaleW(300), ScaleH(5), Color(255,255,255, 200) )
+        end
+
         text3 = back:Add("DLabel")
         text3:SetParent(back)
-        text3:SetPos(ScaleW(20), ScaleH(260))
+        text3:SetPos(ScaleW(20), ScaleH(270))
         text3:SetSize(ScaleW(300), ScaleH(50))
         text3:SetText(args["Line 3"].def)
 
         text4 = back:Add("DLabel")
         text4:SetParent(back)
-        text4:SetPos(ScaleW(20), ScaleH(280))
+        text4:SetPos(ScaleW(20), ScaleH(290))
         text4:SetSize(ScaleW(300), ScaleH(50))
         text4:SetText(args["Line 4"].def)
     elseif method == "remove" then

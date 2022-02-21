@@ -34,3 +34,49 @@ net.Receive("GM2:Net:PanelAccess", function(len, ply)
         end
     end
 end)
+net.Receive("GM2:Entities:WeaponGiver:Verify", function(len, ply)
+    local ent = net.ReadEntity()
+    local r = gm.server.data.main.ranks
+    local pr = ply:GetUserGroup()
+
+    if ply:GetUserGroup() == "Founder" or ply:GetUserGroup() == "founder" or ply:GetUserGroup() == "superadmin" or r[pr] then
+        net.Start("GM2:Entities:WeaponGiver:Open")
+        net.WriteEntity(ent)
+        net.Send(ply)
+    end
+end)
+net.Receive("GM2:Entities:ModelGiver:Verify", function(len, ply)
+    local ent = net.ReadEntity()
+    local r = gm.server.data.main.ranks
+    local pr = ply:GetUserGroup()
+
+    if ply:GetUserGroup() == "Founder" or ply:GetUserGroup() == "founder" or ply:GetUserGroup() == "superadmin" or r[pr] then
+        net.Start("GM2:Entities:ModelGiver:Open")
+        net.WriteEntity(ent)
+        net.Send(ply)
+    end
+end)
+net.Receive("GM2:Entities:WeaponGiver:Set", function(len, ply)
+    local ent = net.ReadEntity()
+    local wep = net.ReadString()
+    local quan = net.ReadInt(32)
+
+    local r = gm.server.data.main.ranks
+    local pr = ply:GetUserGroup()
+
+    if ply:GetUserGroup() == "Founder" or ply:GetUserGroup() == "founder" or ply:GetUserGroup() == "superadmin" or r[pr] then
+        ent:SetData(wep, quan)
+    end
+end)
+net.Receive("GM2:Entities:ModelGiver:Set", function(len, ply)
+    local ent = net.ReadEntity()
+    local str = net.ReadString()
+    local name = net.ReadString()
+
+    local r = gm.server.data.main.ranks
+    local pr = ply:GetUserGroup()
+
+    if ply:GetUserGroup() == "Founder" or ply:GetUserGroup() == "founder" or ply:GetUserGroup() == "superadmin" or r[pr] then
+        ent:SetData(str,name)
+    end
+end)
