@@ -80,3 +80,13 @@ net.Receive("GM2:Entities:ModelGiver:Set", function(len, ply)
         ent:SetData(str,name)
     end
 end)
+
+net.Receive("GM2:Entities:Datapad:Set", function(len, ply)
+    local r = gm.server.data.main.ranks
+    local pr = ply:GetUserGroup()
+    local ent = net.ReadEntity()
+
+    if ply:GetUserGroup() == "Founder" or ply:GetUserGroup() == "founder" or ply:GetUserGroup() == "superadmin" or r[pr] then
+        ent:SetData(net.ReadTable())
+    end
+end)

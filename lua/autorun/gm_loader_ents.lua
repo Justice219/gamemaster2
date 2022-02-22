@@ -31,4 +31,7 @@ if SERVER then
     util.AddNetworkString("GM2:Entities:ModelGiver:Set")
     util.AddNetworkString("GM2:Entities:ModelGiver:Open")
     util.AddNetworkString("GM2:Entities:ModelGiver:Verify")
+
+    util.AddNetworkString("GM2:Entities:Datapad:Open")
+    util.AddNetworkString("GM2:Entities:Datapad:Set")
 end
