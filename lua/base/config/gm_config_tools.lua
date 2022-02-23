@@ -235,7 +235,7 @@ gm.server.tools.add("Kill Player", {
     },
     func = function(caller, args)
         for k,v in pairs(player.GetAll()) do
-            if v:Nick() == args["Name"].def then
+            if v:Nick() == args["Player Name"].def then
                 v:Kill()
                 caller:JLIBSendNotification("Kill PLayer", "You have killed " .. v:Nick())
             else
