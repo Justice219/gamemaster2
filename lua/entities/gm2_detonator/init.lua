@@ -50,13 +50,24 @@ function ENT:Use(act, caller)
     end
 end
 
+function ENT:ExplodeEffect()
+    local effectdata = EffectData()
+    effectdata:SetOrigin(self:GetPos())
+    effectdata:SetScale(1)
+    effectdata:SetMagnitude(1)
+    util.Effect("Explosion", effectdata)
+end
+
 function ENT:Explode()
     timer.Create("gm2_detonator_".. self:EntIndex(), self:GetExplosionTime(), 1, function()
         for k,v in pairs(constraint.FindConstraints(self, "Weld")) do
             print(v)
         end
         self:Remove()
-        self:GetParentProp():Remove()
+        if IsValid(self:GetParentProp()) then
+            self:GetParentProp():Remove()
+        end
+        self:ExplodeEffect()
     end)
     self:SetIsExploding(true)
 end

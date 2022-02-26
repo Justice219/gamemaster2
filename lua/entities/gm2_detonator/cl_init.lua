@@ -22,11 +22,11 @@ function ENT:Draw()
             draw.SimpleText("Press E To Place", imgui.xFont("!Roboto@20"),-180, 20, Color(255,255,255)) 
         elseif !self:GetIsExploding() then
             draw.RoundedBox(6, -185,-1, 250, 90, Color(58,58,58, 100))
-            draw.SimpleText("Detonator (Armed)", imgui.xFont("!Roboto@20"),-180, -0, Color(255,0,0)) 
+            draw.SimpleText("Detonator (Armed)", imgui.xFont("!Roboto@20"),-180, -0, Color(255,136,0)) 
             draw.SimpleText("Press E To Activate", imgui.xFont("!Roboto@20"),-180, 20, Color(255,255,255)) 
         elseif self:GetIsExploding() then
             draw.RoundedBox(6, -185,-1, 250, 90, Color(58,58,58, 100))
-            draw.SimpleText("Detonator (Exploding)", imgui.xFont("!Roboto@20"),-180, -0, Color(255,0,0))
+            draw.SimpleText("Detonator (Exploding)", imgui.xFont("!Roboto@20"),-180, -0, Color(255,136,0))
             draw.SimpleText("Time Left: " .. self:GetTimeLeft(), imgui.xFont("!Roboto@20"),-180, 20, Color(255,255,255))
         end
 

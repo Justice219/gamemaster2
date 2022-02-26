@@ -3,7 +3,7 @@ ENT.Type = "anim"
 ENT.Base = "base_gmodentity"
 ENT.Category = "Gamemaster 2"
 ENT.PrintName = "Detonator"
-ENT.Spawnable = true
+ENT.Spawnable = false 
 
 function ENT:SetupDataTables()
 
